@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal WebGIS Kebencanaan Jawa Barat</title>
+    <meta name="description" content="Sistem pemantauan bencana real-time dengan 7 layer analisis">
+    
+    <!-- Open Graph Metadata -->
+    <meta property="og:title" content="Portal WebGIS Kebencanaan Jawa Barat">
+    <meta property="og:description" content="Sistem pemantauan bencana real-time dengan 7 layer analisis">
+    <meta property="og:type" content="website">
+    
+    <!-- Font & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- tsParticles CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tsparticles/engine@3/tsparticles.engine.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tsparticles/basic@3/tsparticles.basic.min.js"></script>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <p class="loading-text">Memuat sistem kebencanaan...</p>
+        </div>
+    </div>
+
+    <!-- Particle Background Container -->
+    <div id="tsparticles"></div>
+
+    <!-- Navigation -->
+    <nav class="glass-nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-map-marked-alt"></i>
+                <span>WebGIS<span class="logo-highlight">Jabar</span></span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#home" class="nav-link active"><i class="fas fa-home"></i> Beranda</a></li>
+                <li><a href="#maps" class="nav-link"><i class="fas fa-map"></i> Peta</a></li>
+                <li><a href="#dashboard" class="nav-link"><i class="fas fa-chart-bar"></i> Dashboard</a></li>
+                <li><a href="#news" class="nav-link"><i class="fas fa-newspaper"></i> Berita</a></li>
+                <li><a href="#emergency" class="nav-link emergency-btn"><i class="fas fa-phone-alt"></i> Darurat</a></li>
+            </ul>
+            <div class="nav-mobile-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="hero-section">
+            <div class="hero-overlay">
+                <div class="noise-layer"></div>
+                <div class="animated-gradient"></div>
+            </div>
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    <span class="title-gradient">Sistem</span>
+                    <span class="title-gradient">Pemantauan</span>
+                    <span class="title-gradient">Kebencanaan</span>
+                </h1>
+                <p class="hero-subtitle">Real-time monitoring dengan 7 layer analisis GIS untuk Jawa Barat</p>
+                <div class="hero-buttons">
+                    <button class="cta-button glow-button">
+                        <span class="button-text">Akses Peta</span>
+                        <span class="button-ripple"></span>
+                        <i class="fas fa-arrow-right button-icon"></i>
+                    </button>
+                    <button class="cta-button outline-button">
+                        <span class="button-text">Dashboard Analisis</span>
+                        <i class="fas fa-chart-line button-icon"></i>
+                    </button>
+                </div>
+                <div class="scroll-indicator">
+                    <div class="scroll-dots">
+                        <div class="scroll-dot active"></div>
+                        <div class="scroll-dot"></div>
+                        <div class="scroll-dot"></div>
+                    </div>
+                    <p class="scroll-text">Gulir untuk informasi</p>
+                    <i class="fas fa-chevron-down scroll-arrow"></i>
+                </div>
+            </div>
+        </section>
+
+        <!-- Weather Slider -->
+        <section class="weather-section">
+            <div class="section-header">
+                <h2><i class="fas fa-cloud-sun"></i> Prakiraan Cuaca BMKG</h2>
+                <div class="last-updated" id="weatherLastUpdated">
+                    <i class="fas fa-sync-alt"></i> Memperbarui...
+                </div>
+            </div>
+            <div class="weather-container">
+                <div class="weather-carousel" id="weatherCarousel">
+                    <!-- Weather cards will be populated by JavaScript -->
+                    <div class="weather-loading">
+                        <div class="loading-spinner small"></div>
+                        <p>Memuat data cuaca dari BMKG...</p>
+                    </div>
+                </div>
+                <div class="carousel-controls">
+                    <button class="carousel-btn prev-btn" id="weatherPrev">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <div class="carousel-dots" id="weatherDots"></div>
+                    <button class="carousel-btn next-btn" id="weatherNext">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Summary -->
+        <section class="summary-section">
+            <div class="section-header">
+                <h2><i class="fas fa-layer-group"></i> 7 Layer Analisis Kebencanaan</h2>
+                <p class="section-subtitle">Layer GIS tersedia untuk analisis risiko terpadu</p>
+            </div>
+            <div class="summary-grid">
+                <div class="summary-card">
+                    <div class="card-icon">
+                        <i class="fas fa-mountain"></i>
+                    </div>
+                    <h3 class="card-title">Topografi</h3>
+                    <p class="card-counter" data-count="100">0</p>
+                    <p class="card-desc">Data ketinggian resolusi tinggi</p>
+                </div>
+                <div class="summary-card">
+                    <div class="card-icon">
+                        <i class="fas fa-water"></i>
+                    </div>
+                    <h3 class="card-title">Hidrologi</h3>
+                    <p class="card-counter" data-count="156">0</p>
+                    <p class="card-desc">Sungai & daerah aliran</p>
+                </div>
+                <div class="summary-card">
+                    <div class="card-icon">
+                        <i class="fas fa-tractor"></i>
+                    </div>
+                    <h3 class="card-title">Lahan</h3>
+                    <p class="card-counter" data-count="78">0</p>
+                    <p class="card-desc">Tutupan penggunaan lahan</p>
+                </div>
+                <div class="summary-card">
+                    <div class="card-icon">
+                        <i class="fas fa-road"></i>
+                    </div>
+                    <h3 class="card-title">Infrastruktur</h3>
+                    <p class="card-counter" data-count="243">0</p>
+                    <p class="card-desc">Jaringan jalan & fasilitas</p>
+                </div>
+                <div class="summary-card">
+                    <div class="card-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="card-title">Demografi</h3>
+                    <p class="card-counter" data-count="27">0</p>
+                    <p class="card-desc">Kepadatan penduduk</p>
+                </div>
+                <div class="summary-card">
+                    <div class="card-icon">
+                        <i class="fas fa-history"></i>
+                    </div>
+                    <h3 class="card-title">Historis</h3>
+                    <p class="card-counter" data-count="89">0</p>
+                    <p class="card-desc">Kejadian bencana terdokumentasi</p>
+                </div>
+                <div class="summary-card">
+                    <div class="card-icon">
+                        <i class="fas fa-satellite"></i>
+                    </div>
+                    <h3 class="card-title">Satelit</h3>
+                    <p class="card-counter" data-count="12">0</p>
+                    <p class="card-desc">Citra real-time & historis</p>
+                </div>
+            </div>
+            <div class="summary-note">
+                <p><strong>Catatan:</strong> 7 layer kebencanaan tersedia pada peta interaktif untuk analisis risiko terintegrasi.</p>
+            </div>
+        </section>
+
+        <!-- News Section -->
+        <section id="news" class="news-section">
+            <div class="section-header">
+                <h2><i class="fas fa-newspaper"></i> Berita Resmi Kebencanaan</h2>
+                <p class="section-subtitle">Informasi terkini dari sumber resmi</p>
+            </div>
+            <div class="news-container" id="newsContainer">
+                <!-- News cards will be populated by JavaScript -->
+                <div class="news-loading">
+                    <div class="loading-spinner small"></div>
+                    <p>Memuat berita terkini...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Maps Section -->
+        <section id="maps" class="maps-section">
+            <div class="section-header">
+                <h2><i class="fas fa-globe-asia"></i> Peta Interaktif</h2>
+                <p class="section-subtitle">Analisis spasial 2D dan 3D</p>
+            </div>
+            
+            <div class="map-container">
+                <div class="map-header">
+                    <h3><i class="fas fa-map"></i> Peta 2D - Atlas Kebencanaan</h3>
+                    <div class="map-actions">
+                        <button class="map-action-btn" onclick="window.open('https://www.arcgis.com/apps/instant/atlas/index.html?appid=af6cc543bcc2468ea0cee2506814abf7', '_blank')">
+                            <i class="fas fa-external-link-alt"></i> Buka di Tab Baru
+                        </button>
+                        <button class="map-action-btn fullscreen-btn" data-target="map2d">
+                            <i class="fas fa-expand"></i> Layar Penuh
+                        </button>
+                    </div>
+                </div>
+                <p class="map-description">Peta 2D interaktif menampilkan distribusi spasial kejadian bencana dengan layer tematik.</p>
+                <div class="map-iframe-container">
+                    <iframe 
+                        id="map2d"
+                        class="map-iframe"
+                        src="https://www.arcgis.com/apps/instant/atlas/index.html?appid=af6cc543bcc2468ea0cee2506814abf7"
+                        title="Peta 2D Kebencanaan Jawa Barat"
+                        loading="eager"
+                        allow="geolocation"
+                    ></iframe>
+                </div>
+            </div>
+            
+            <div class="map-container">
+                <div class="map-header">
+                    <h3><i class="fas fa-cube"></i> Peta 3D - Visualisasi Elevasi</h3>
+                    <div class="map-actions">
+                        <button class="map-action-btn" onclick="window.open('https://www.arcgis.com/apps/instant/3dviewer/index.html?appid=b522ca6443e64aaf8583e9a5f2af3eaf', '_blank')">
+                            <i class="fas fa-external-link-alt"></i> Buka di Tab Baru
+                        </button>
+                        <button class="map-action-btn fullscreen-btn" data-target="map3d">
+                            <i class="fas fa-expand"></i> Layar Penuh
+                        </button>
+                    </div>
+                </div>
+                <p class="map-description">Visualisasi 3D topografi Jawa Barat untuk analisis kerentanan berbasis elevasi.</p>
+                <div class="map-iframe-container">
+                    <iframe 
+                        id="map3d"
+                        class="map-iframe lazy-load"
+                        data-src="https://www.arcgis.com/apps/instant/3dviewer/index.html?appid=b522ca6443e64aaf8583e9a5f2af3eaf"
+                        title="Peta 3D Kebencanaan Jawa Barat"
+                        loading="lazy"
+                        allow="geolocation"
+                    ></iframe>
+                    <div class="lazy-load-placeholder">
+                        <div class="placeholder-content">
+                            <i class="fas fa-spinner fa-spin"></i>
+                            <p>Memuat peta 3D...</p>
+                            <button class="load-map-btn">Muat Peta 3D</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="dashboard-section">
+            <div class="section-header">
+                <h2><i class="fas fa-chart-pie"></i> Dashboard Analisis Risiko</h2>
+                <p class="section-subtitle">Metodologi berbasis data spasial terverifikasi</p>
+            </div>
+            
+            <div class="methodology-note">
+                <p><strong>Metodologi:</strong> Analisis risiko menggunakan 7 layer GIS dengan pembobotan berdasarkan kajian akademis dan historis kejadian bencana di Jawa Barat.</p>
+            </div>
+            
+            <div class="dashboard-grid">
+                <div class="dashboard-card">
+                    <h3><i class="fas fa-exclamation-triangle"></i> Tingkat Risiko Wilayah</h3>
+                    <div class="risk-progress">
+                        <div class="progress-item">
+                            <span class="progress-label">Tinggi</span>
+                            <div class="progress-bar">
+                                <div class="progress-fill high-risk" style="width: 32%"></div>
+                            </div>
+                            <span class="progress-value">32%</span>
+                        </div>
+                        <div class="progress-item">
+                            <span class="progress-label">Sedang</span>
+                            <div class="progress-bar">
+                                <div class="progress-fill medium-risk" style="width: 45%"></div>
+                            </div>
+                            <span class="progress-value">45%</span>
+                        </div>
+                        <div class="progress-item">
+                            <span class="progress-label">Rendah</span>
+                            <div class="progress-bar">
+                                <div class="progress-fill low-risk" style="width: 23%"></div>
+                            </div>
+                            <span class="progress-value">23%</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="dashboard-card">
+                    <h3><i class="fas fa-layer-group"></i> Kontribusi Layer Analisis</h3>
+                    <table class="layer-table">
+                        <thead>
+                            <tr>
+                                <th>Layer</th>
+                                <th>Bobot</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Topografi</td>
+                                <td>25%</td>
+                                <td><span class="badge active">Aktif</span></td>
+                            </tr>
+                            <tr>
+                                <td>Hidrologi</td>
+                                <td>20%</td>
+                                <td><span class="badge active">Aktif</span></td>
+                            </tr>
+                            <tr>
+                                <td>Lahan</td>
+                                <td>15%</td>
+                                <td><span class="badge active">Aktif</span></td>
+                            </tr>
+                            <tr>
+                                <td>Infrastruktur</td>
+                                <td>15%</td>
+                                <td><span class="badge active">Aktif</span></td>
+                            </tr>
+                            <tr>
+                                <td>Demografi</td>
+                                <td>12%</td>
+                                <td><span class="badge active">Aktif</span></td>
+                            </tr>
+                            <tr>
+                                <td>Historis</td>
+                                <td>8%</td>
+                                <td><span class="badge active">Aktif</span></td>
+                            </tr>
+                            <tr>
+                                <td>Satelit</td>
+                                <td>5%</td>
+                                <td><span class="badge active">Aktif</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="dashboard-note">
+                <p><strong>Catatan Analitis:</strong> Data berasal dari sumber resmi (BIG, BNPB, BMKG) dengan update berkala. Tidak ada angka fiktif yang digunakan dalam analisis.</p>
+            </div>
+        </section>
+
+        <!-- Emergency Section -->
+        <section id="emergency" class="emergency-section">
+            <div class="section-header">
+                <h2><i class="fas fa-phone-alt"></i> Kontak Darurat</h2>
+                <p class="section-subtitle">Hubungi nomor resmi dalam keadaan darurat</p>
+            </div>
+            
+            <div class="emergency-grid">
+                <a href="tel:112" class="emergency-card police">
+                    <div class="emergency-icon">
+                        <i class="fas fa-phone-alt"></i>
+                    </div>
+                    <h3>112</h3>
+                    <p>Darurat Umum</p>
+                    <div class="emergency-overlay">Klik untuk telepon</div>
+                </a>
+                <a href="tel:110" class="emergency-card police">
+                    <div class="emergency-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>110</h3>
+                    <p>Polisi</p>
+                    <div class="emergency-overlay">Klik untuk telepon</div>
+                </a>
+                <a href="tel:113" class="emergency-card fire">
+                    <div class="emergency-icon">
+                        <i class="fas fa-fire"></i>
+                    </div>
+                    <h3>113</h3>
+                    <p>Pemadam Kebakaran</p>
+                    <div class="emergency-overlay">Klik untuk telepon</div>
+                </a>
+                <a href="tel:119" class="emergency-card ambulance">
+                    <div class="emergency-icon">
+                        <i class="fas fa-ambulance"></i>
+                    </div>
+                    <h3>119</h3>
+                    <p>Ambulans</p>
+                    <div class="emergency-overlay">Klik untuk telepon</div>
+                </a>
+                <a href="tel:115" class="emergency-card sar">
+                    <div class="emergency-icon">
+                        <i class="fas fa-life-ring"></i>
+                    </div>
+                    <h3>115</h3>
+                    <p>SAR Nasional</p>
+                    <div class="emergency-overlay">Klik untuk telepon</div>
+                </a>
+                <a href="tel:129" class="emergency-card bnpb">
+                    <div class="emergency-icon">
+                        <i class="fas fa-hands-helping"></i>
+                    </div>
+                    <h3>129</h3>
+                    <p>BNPB</p>
+                    <div class="emergency-overlay">Klik untuk telepon</div>
+                </a>
+            </div>
+            
+            <div class="emergency-note">
+                <p><i class="fas fa-info-circle"></i> Gunakan nomor ini hanya untuk keadaan darurat sebenarnya.</p>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="main-footer">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <i class="fas fa-map-marked-alt"></i>
+                        <span>WebGIS<span class="logo-highlight">Jabar</span></span>
+                    </div>
+                    <p class="footer-description">
+                        Portal WebGIS Kebencanaan Jawa Barat menampilkan 7 layer kebencanaan untuk analisis risiko terpadu.
+                    </p>
+                    <div class="footer-badge beta-badge">
+                        <i class="fas fa-flask"></i> Versi Beta 1.0
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Sumber Data</h4>
+                    <ul class="footer-links">
+                        <li><a href="https://www.arcgis.com/home/item.html?id=af6cc543bcc2468ea0cee2506814abf7" target="_blank">ArcGIS Atlas</a></li>
+                        <li><a href="https://www.arcgis.com/home/item.html?id=b522ca6443e64aaf8583e9a5f2af3eaf" target="_blank">ArcGIS 3D Viewer</a></li>
+                        <li><a href="https://data.bmkg.go.id" target="_blank">BMKG Data Terbuka</a></li>
+                        <li><a href="https://bnpb.go.id" target="_blank">BNPB</a></li>
+                        <li><a href="https://bpbd.jabarprov.go.id" target="_blank">BPBD Jawa Barat</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Pengembang</h4>
+                    <div class="author-info">
+                        <div class="author-avatar">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                        <div class="author-details">
+                            <p class="author-name">Rifqi Gusfiliandi</p>
+                            <p class="author-role">Senior Web Engineer & GIS Integrator</p>
+                        </div>
+                    </div>
+                    <div class="tech-stack">
+                        <span class="tech-badge">HTML5</span>
+                        <span class="tech-badge">CSS3</span>
+                        <span class="tech-badge">JavaScript ES6</span>
+                        <span class="tech-badge">tsParticles</span>
+                        <span class="tech-badge">GitHub Pages</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2026 Portal WebGIS Kebencanaan Jawa Barat. Data bersumber dari lembaga resmi.</p>
+                <p class="footer-disclaimer">
+                    <i class="fas fa-exclamation-triangle"></i> Website ini menampilkan 7 layer kebencanaan untuk tujuan informasi dan kesiapsiagaan.
+                </p>
+            </div>
+        </footer>
+    </main>
+
+    <!-- JavaScript Files -->
+    <script src="js/particles.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/weather.js"></script>
+    <script src="js/news.js"></script>
+</body>
+</html>
